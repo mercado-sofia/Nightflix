@@ -103,7 +103,7 @@ body{
 
 section {
     height: 100vh;
-    padding: 20px;
+    padding: 90px 20px 20px;
 }
 
 section h1{
@@ -112,7 +112,6 @@ section h1{
 
 #home {
     border-bottom: .5px solid var(--3);
-    padding-top: 90px;
 }
 
 #calendar {
