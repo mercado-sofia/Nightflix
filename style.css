@@ -4,3 +4,15 @@
     box-sizing: border-box;
     text-decoration: none;
 }
+
+:root {
+    --1: #E50914;
+    --2: #B81D24;
+    --3: #221F1F;
+    --4: #131313;
+}
+
+body{
+    background-color: black;
+}
+
