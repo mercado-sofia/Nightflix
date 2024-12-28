@@ -16,3 +16,80 @@ body{
     background-color: black;
 }
 
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--4);
+    padding: 20px 20px;
+}
+
+.navbar-logo {
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.navbar-logo img {
+    height: 32px;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    flex: 1;
+}
+
+.navbar-menu a {
+    color: white;
+    text-decoration: none;
+    font-family: "Roboto", serif;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.navbar-menu a:hover {
+    color: var(--1);
+}
+
+.navbar-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.navbar-buttons a {
+    text-decoration: none;
+    font-family: "Roboto", serif;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 14px;
+    padding: 8px 24px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-buttons .signup {
+    color: white;
+}
+
+.navbar-buttons .signup:hover {
+    background-color: white;
+    color: black;
+}
+
+.navbar-buttons .login {
+    background-color: var(--1);
+    color: white;
+    border: none;
+    margin-right: 10px;
+}
+
+.navbar-buttons .login:hover {
+    background-color: darkred;
+}
