@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,150;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="navbar">
         <div class="navbar-logo">
-            <img src="img/nightflix-logo.png" alt="Logo">
+            <img src="img/nightflix-logo.png" alt="Nightflix Logo">
         </div>
         <div class="navbar-menu">
             <a href="#home">Home</a>
@@ -26,18 +26,63 @@
     </div>
 
     <section id="home">
-        <h1>Home Section</h1>
-
+        <h1>Welcome to Nightflix</h1>
     </section>
 
     <section id="calendar">
-        <h1>Calendar Section</h1>
-
+        <h1>Calendar</h1>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button id="prev-year">&laquo; Year</button>
+                <button id="prev-month">&lsaquo; Month</button>
+                <h2 id="month-year">January 2025</h2>
+                <button id="next-month">Month &rsaquo;</button>
+                <button id="next-year">Year &raquo;</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-row">Sun</div>
+                <div class="calendar-row">Mon</div>
+                <div class="calendar-row">Tues</div>
+                <div class="calendar-row">Wed</div>
+                <div class="calendar-row">Thurs</div>
+                <div class="calendar-row">Fri</div>
+                <div class="calendar-row">Sat</div>
+            </div>
+            <div class="calendar-dates" id="calendar-dates">
+                <!-- Dates will be dynamically generated -->
+            </div>
+        </div>
     </section>
 
     <section id="mylist">
-        <h1>My List Section</h1>
-        
+        <h1>My List</h1>
     </section>
+
+    <!-- Modal -->
+    <div id="calendar-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-date">January 1, 2024</h3>
+            <div id="movie-series-entries">
+                <form class="entry-form">
+                    <label for="type">Type:</label>
+                    <select class="type">
+                        <option value="movie">Movie</option>
+                        <option value="series">Series</option>
+                    </select>
+                    <label for="title">Title:</label>
+                    <input type="text" class="title" placeholder="Enter movie or series title">
+                    <label for="notes">Notes:</label>
+                    <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, themes, snacks)"></textarea>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" id="modal-cancel">Cancel</button>
+                <button type="button" id="modal-add-another">+ Add Another</button>
+                <button type="submit" id="modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
