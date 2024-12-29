@@ -454,13 +454,14 @@ section h1 {
 .mylist-content {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 20px;
+    gap: 28px;
+    margin-left: 26px;
+    margin-top: 18px;
 }
 
 .mylist-card {
     width: 12rem;
-    height: 16rem;
+    height: 17.4rem;
     background-color: #1e1e1e;
     border-radius: 8px;
     overflow: hidden;
