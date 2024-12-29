@@ -130,6 +130,45 @@ section h1 {
     border-bottom: .5px solid var(--3);
 }
 
+/* Home */
+#home {
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #000;
+}
+
+#home .title {
+    font-size: 8rem;
+    color: #e50914;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    animation: curveText 1.5s ease-in-out;
+}
+
+@keyframes curveText {
+    0% {
+        transform: scale(0.5) translateY(50px);
+        opacity: 0;
+        letter-spacing: 20px;
+    }
+    50% {
+        transform: scale(1.2) translateY(-20px);
+        opacity: 1;
+        letter-spacing: 5px;
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+
 /* Calendar */
 #calendar {
     margin: 2rem 0;
