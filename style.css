@@ -168,10 +168,18 @@ section h1 {
 
 /* Calendar */
 #calendar {
-    padding: 8rem 4rem;
+    padding: 7rem 4rem;
     max-width: 100%;
     align-items: center;
-    text-align: center;
+    margin-bottom: 20rem;
+}
+
+#calendar h1{
+    font-size: 52px;
+    font-weight: 500;
+    padding-bottom: 1.6rem;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--1);
 }
 
 .calendar-container {
@@ -215,8 +223,8 @@ section h1 {
 
 .calendar-grid, .calendar-dates {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns for the days of the week */
-    gap: 0.2rem; /* Adjust the spacing between cells */
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.2rem; 
     text-align: center;
 }
 
@@ -227,14 +235,14 @@ section h1 {
 
 .calendar-cell {
     position: relative;
-    padding: 1rem 3rem; /* Wider padding for rectangular shape */
+    padding: 1rem 3rem;
     text-align: center;
-    border: 1px solid var(--4); /* Border for visibility */
-    background-color: var(--5); /* Default background color */
+    border: 1px solid var(--4);
+    background-color: var(--5);
     color: white;
-    font-size: 1.2rem; /* Slightly larger font size */
+    font-size: 1.2rem;
     font-weight: bold;
-    border-radius: 8px; /* Rounded corners for a modern look */
+    border-radius: 8px; 
 }
 
 .calendar-cell.inactive {
@@ -249,7 +257,7 @@ section h1 {
 
 /* Add Modal styles */
 #calendar-modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -267,8 +275,8 @@ section h1 {
     border-radius: 10px;
     max-width: 450px;
     width: 90%;
-    max-height: 80vh; /* Limit modal height to 80% of viewport height */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+    max-height: 80vh;
+    overflow-y: auto;
     text-align: left;
 }
 
@@ -355,7 +363,7 @@ section h1 {
 }
 
 #modal-add-another {
-    background-color: #007bff; /* Blue color for "Add Another" */
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -364,14 +372,14 @@ section h1 {
 }
 
 #modal-add-another:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }
 
 /* Calendar hover interaction */
 .calendar-cell:hover {
     cursor: pointer;
-    background-color: #800000; /* Change hover background color */
-    color: transparent; /* Hide the number on hover */
+    background-color: #800000;
+    color: transparent;
 }
 
 .calendar-cell:hover::after {
@@ -388,16 +396,16 @@ section h1 {
 
 /* My List Section */
 #mylist {
-    padding: 8rem 4rem;
+    padding: 7rem 4rem;
     max-width: 100%;
     align-items: center;
-    margin: 100px 0 500px 0;
+    margin-bottom: 35rem;
 }
 
 #mylist h1{
-    font-size: 56px;
-    font-weight: 600;
-    padding-bottom: 1.8rem;
+    font-size: 52px;
+    font-weight: 500;
+    padding-bottom: 1.6rem;
     margin-bottom: 4rem;
     border-bottom: 1px solid var(--1);
 }
@@ -570,7 +578,6 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-/* For Firefox */
 input[type=number] {
     -moz-appearance: textfield;
 }

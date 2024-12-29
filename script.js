@@ -90,12 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const year = currentDate.getFullYear();
         modalDate.textContent = `${monthName} ${day}, ${year}`;
         modal.style.display = 'flex';
-        resetEntries(); // Reset the modal form for fresh entries
+        resetEntries();
     }
 
     function resetEntries() {
-        movieSeriesEntries.innerHTML = ''; // Clear previous entries
-        addEntryForm(); // Add one default entry form
+        movieSeriesEntries.innerHTML = '';
+        addEntryForm();
     }
 
     function addEntryForm() {
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log(`Entries for ${selectedDate.toDateString()}:`, data);
         alert("Entries saved successfully!");
-        modal.style.display = 'none'; // Close the modal
+        modal.style.display = 'none';
     });
 
     modalCancel.addEventListener('click', () => {
