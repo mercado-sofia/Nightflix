@@ -1,3 +1,27 @@
+const navLinks = document.querySelectorAll('.nav-link');
+
+function updateActiveLink() {
+    const scrollPosition = window.scrollY;
+
+    navLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight; 
+
+        if (scrollPosition >= sectionTop - 50 && scrollPosition < sectionTop + sectionHeight - 50) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', updateActiveLink);
+
+updateActiveLink();
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const calendarDates = document.getElementById('calendar-dates');
     const monthYear = document.getElementById('month-year');
@@ -87,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <label for="title">Title:</label>
             <input type="text" class="title" placeholder="Enter movie or series title">
             <label for="notes">Notes:</label>
-            <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, themes, snacks)"></textarea>
+            <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, genres, snacks)"></textarea>
         `;
 
         movieSeriesEntries.appendChild(newForm);
@@ -139,4 +163,59 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderCalendar();
+});
+
+// myList section
+
+// JavaScript for handling the "My List" section
+
+const myListContainer = document.querySelector(".mylist-grid");
+const placeholder = document.getElementById("placeholder");
+const modal = document.getElementById("mylist-modal");
+const addNewButton = document.getElementById("add-new-button"); // Updated selector
+const cancelButton = document.getElementById("mylist-modal-cancel");
+const form = document.getElementById("mylist-form");
+
+// Function to add items to the list
+function addToMyList(title, imageSrc, releaseDate) {
+    // Create a new list item
+    const newItem = document.createElement("div");
+    newItem.classList.add("mylist-item");
+
+    // Add content to the new item
+    newItem.innerHTML = `
+        <img src="${imageSrc}" alt="${title} Poster">
+        <h3>${title}</h3>
+        <p>${releaseDate}</p>
+    `;
+
+    // Append the new item to the container
+    myListContainer.insertBefore(newItem, addNewButton);
+}
+
+// Open modal on "+NEW" button click
+addNewButton.addEventListener("click", () => {
+    modal.style.display = "flex";
+});
+
+// Close modal on "Cancel" button click
+cancelButton.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// Handle "Save" button click
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Get form values
+    const title = document.getElementById("item-title").value;
+    const imageSrc = document.getElementById("item-image").value;
+    const releaseDate = document.getElementById("item-date").value;
+
+    // Add the new item to the list
+    addToMyList(title, imageSrc, releaseDate);
+
+    // Reset form and close modal
+    form.reset();
+    modal.style.display = "none";
 });
