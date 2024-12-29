@@ -15,9 +15,9 @@
             <img src="img/nightflix-logo.png" alt="Nightflix Logo">
         </div>
         <div class="navbar-menu">
-            <a href="#home">Home</a>
-            <a href="#calendar">Calendar</a>
-            <a href="#mylist">My List</a>
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#calendar" class="nav-link">Calendar</a>
+            <a href="#mylist" class="nav-link">My List</a>
         </div>
         <div class="navbar-buttons">
             <a href="#" class="signup">Sign Up</a>
@@ -31,7 +31,7 @@
 
     <!-- Calendar -->
     <section id="calendar">
-        <h1>Calendar</h1>
+        <h1>Schedule</h1>
         <div class="calendar-container">
             <div class="calendar-header">
                 <button id="prev-year">&laquo; Year</button>
@@ -57,9 +57,24 @@
 
     <section id="mylist">
         <h1>My List</h1>
-    </section>
-
-    <!-- Modal -->
+        <div class="mylist-header">
+            <select id="mylist-category-filter">
+              <option value="all">ALL</option>
+            </select>
+            <button id="mylist-add-list-btn">ADD LIST</button>
+          </div>
+        <div class="mylist-container">
+            <div class="mylist-content">
+              <div class="mylist-card" id="mylist-new-card">
+                <div class="mylist-card-content">
+                  <h3>+ NEW</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+    </section>    
+    
+    <!-- Calendar Modal -->
     <div id="calendar-modal" class="modal">
         <div class="modal-content">
             <h3 id="modal-date">January 1, 2024</h3>
@@ -73,7 +88,7 @@
                     <label for="title">Title:</label>
                     <input type="text" class="title" placeholder="Enter movie or series title">
                     <label for="notes">Notes:</label>
-                    <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, themes, snacks)"></textarea>
+                    <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, genres, snacks)"></textarea>
                 </form>
             </div>
             <div class="modal-buttons">
@@ -81,6 +96,37 @@
                 <button type="button" id="modal-add-another">+ Add Another</button>
                 <button type="submit" id="modal-save">Save</button>
             </div>
+        </div>
+    </div>
+    
+    
+    <!-- MyList Modal -->
+
+    <!-- Add List Modal -->
+    <div class="mylist-modal" id="mylist-add-list-modal">
+        <div class="mylist-modal-content">
+        <label for="mylist-new-list-name">List Name</label>
+        <input type="text" id="mylist-new-list-name">
+        <div class="button-container">
+            <button id="mylist-cancel-list-btn">Cancel</button>
+            <button id="mylist-save-list-btn">Save</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div class="mylist-modal" id="mylist-add-item-modal">
+        <div class="mylist-modal-content">
+        <label for="mylist-item-poster">Poster</label>
+        <input type="file" id="mylist-item-poster" accept="image/*">
+        <label for="mylist-item-title">Title</label>
+        <input type="text" id="mylist-item-title">
+        <label for="mylist-item-rating">What would you rate it? (?/10)</label>
+        <input type="number" id="mylist-item-rating" min="1" max="10">
+        <div class="button-container">
+            <button id="mylist-cancel-item-btn">Cancel</button>
+            <button id="mylist-save-item-btn">Save</button>
+          </div>
         </div>
     </div>
 

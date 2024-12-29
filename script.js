@@ -1,3 +1,27 @@
+const navLinks = document.querySelectorAll('.nav-link');
+
+function updateActiveLink() {
+    const scrollPosition = window.scrollY;
+
+    navLinks.forEach(link => {
+        const section = document.querySelector(link.getAttribute('href'));
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight; 
+
+        if (scrollPosition >= sectionTop - 50 && scrollPosition < sectionTop + sectionHeight - 50) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', updateActiveLink);
+
+updateActiveLink();
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const calendarDates = document.getElementById('calendar-dates');
     const monthYear = document.getElementById('month-year');
@@ -66,12 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const year = currentDate.getFullYear();
         modalDate.textContent = `${monthName} ${day}, ${year}`;
         modal.style.display = 'flex';
-        resetEntries(); // Reset the modal form for fresh entries
+        resetEntries();
     }
 
     function resetEntries() {
-        movieSeriesEntries.innerHTML = ''; // Clear previous entries
-        addEntryForm(); // Add one default entry form
+        movieSeriesEntries.innerHTML = '';
+        addEntryForm();
     }
 
     function addEntryForm() {
@@ -87,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <label for="title">Title:</label>
             <input type="text" class="title" placeholder="Enter movie or series title">
             <label for="notes">Notes:</label>
-            <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, themes, snacks)"></textarea>
+            <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, genres, snacks)"></textarea>
         `;
 
         movieSeriesEntries.appendChild(newForm);
@@ -111,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log(`Entries for ${selectedDate.toDateString()}:`, data);
         alert("Entries saved successfully!");
-        modal.style.display = 'none'; // Close the modal
+        modal.style.display = 'none';
     });
 
     modalCancel.addEventListener('click', () => {
@@ -139,4 +163,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderCalendar();
+});
+
+// myList section
+const addListBtn = document.getElementById('mylist-add-list-btn');
+const addListModal = document.getElementById('mylist-add-list-modal');
+const saveListBtn = document.getElementById('mylist-save-list-btn');
+const cancelListBtn = document.getElementById('mylist-cancel-list-btn');
+const categoryFilter = document.getElementById('mylist-category-filter');
+
+const newCard = document.getElementById('mylist-new-card');
+const addItemModal = document.getElementById('mylist-add-item-modal');
+const saveItemBtn = document.getElementById('mylist-save-item-btn');
+const cancelItemBtn = document.getElementById('mylist-cancel-item-btn');
+
+addListBtn.addEventListener('click', () => {
+  addListModal.style.display = 'flex';
+});
+
+saveListBtn.addEventListener('click', () => {
+  const newListName = document.getElementById('mylist-new-list-name').value;
+  if (newListName) {
+    const option = document.createElement('option');
+    option.value = newListName.toLowerCase();
+    option.textContent = newListName;
+    categoryFilter.appendChild(option);
+    addListModal.style.display = 'none';
+  }
+});
+
+cancelListBtn.addEventListener('click', () => {
+  addListModal.style.display = 'none';
+});
+
+newCard.addEventListener('click', () => {
+  addItemModal.style.display = 'flex';
+});
+
+saveItemBtn.addEventListener('click', () => {
+  const posterInput = document.getElementById('mylist-item-poster');
+  const title = document.getElementById('mylist-item-title').value;
+  const rating = document.getElementById('mylist-item-rating').value;
+
+  if (posterInput.files.length > 0 && title && rating) {
+    const file = posterInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const card = document.createElement('div');
+      card.className = 'mylist-card';
+      card.innerHTML = `
+        <img src="${e.target.result}" alt="${title}">
+        <div class="mylist-card-content">
+          <h2>${title}</h2>
+          <p>Rating: ${rating}/10</p>
+        </div>`;
+      document.querySelector('.mylist-content').appendChild(card);
+      addItemModal.style.display = 'none';
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+cancelItemBtn.addEventListener('click', () => {
+  addItemModal.style.display = 'none';
+});
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('mylist-modal')) {
+    event.target.style.display = 'none';
+  }
 });
