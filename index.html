@@ -55,23 +55,22 @@
     </section>
 
     <section id="mylist">
+        <h1>My List</h1>
         <div class="mylist-header">
-            <select class="filter-dropdown">
-                <option value="all">ALL</option>
-                <option value="movies">Movies</option>
-                <option value="series">Series</option>
+            <select id="mylist-category-filter">
+              <option value="all">ALL</option>
             </select>
-            <button class="add-list-button">ADD LIST</button>
-        </div>
+            <button id="mylist-add-list-btn">ADD LIST</button>
+          </div>
         <div class="mylist-container">
-            <div class="mylist-grid">
-                <div id="placeholder" class="placeholder">
-                    <p>Your list is empty.</p>
+            <div class="mylist-content">
+              <div class="mylist-card" id="mylist-new-card">
+                <div class="mylist-card-content">
+                  <h3>+ NEW</h3>
                 </div>
-                <!-- +NEW button -->
-                <button class="add-new" id="add-new-button">+ NEW</button>
-            </div>    
-        </div>
+              </div>
+            </div>
+          </div>
     </section>    
     
     <!-- Calendar Modal -->
@@ -99,20 +98,36 @@
         </div>
     </div>
     
+    
     <!-- MyList Modal -->
-    <div id="mylist-modal">
+
+    <!-- Add List Modal -->
+    <div class="mylist-modal" id="mylist-add-list-modal">
         <div class="mylist-modal-content">
-            <h2>Add to My List</h2>
-            <form id="mylist-form">
-                <input type="text" id="item-title" placeholder="Title" required>
-                <input type="text" id="item-image" placeholder="Image URL" required>
-                <input type="date" id="item-date" required>
-                <button type="submit" id="mylist-modal-save">Save</button>
-                <button type="button" id="mylist-modal-cancel">Cancel</button>
-            </form>
+        <label for="mylist-new-list-name">List Name</label>
+        <input type="text" id="mylist-new-list-name">
+        <div class="button-container">
+            <button id="mylist-cancel-list-btn">Cancel</button>
+            <button id="mylist-save-list-btn">Save</button>
+        </div>
         </div>
     </div>
-    
+
+    <!-- Add Item Modal -->
+    <div class="mylist-modal" id="mylist-add-item-modal">
+        <div class="mylist-modal-content">
+        <label for="mylist-item-poster">Poster</label>
+        <input type="file" id="mylist-item-poster" accept="image/*">
+        <label for="mylist-item-title">Title</label>
+        <input type="text" id="mylist-item-title">
+        <label for="mylist-item-rating">What would you rate it? (?/10)</label>
+        <input type="number" id="mylist-item-rating" min="1" max="10">
+        <div class="button-container">
+            <button id="mylist-cancel-item-btn">Cancel</button>
+            <button id="mylist-save-item-btn">Save</button>
+          </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

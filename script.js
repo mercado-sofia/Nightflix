@@ -166,56 +166,72 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // myList section
+const addListBtn = document.getElementById('mylist-add-list-btn');
+const addListModal = document.getElementById('mylist-add-list-modal');
+const saveListBtn = document.getElementById('mylist-save-list-btn');
+const cancelListBtn = document.getElementById('mylist-cancel-list-btn');
+const categoryFilter = document.getElementById('mylist-category-filter');
 
-// JavaScript for handling the "My List" section
+const newCard = document.getElementById('mylist-new-card');
+const addItemModal = document.getElementById('mylist-add-item-modal');
+const saveItemBtn = document.getElementById('mylist-save-item-btn');
+const cancelItemBtn = document.getElementById('mylist-cancel-item-btn');
 
-const myListContainer = document.querySelector(".mylist-grid");
-const placeholder = document.getElementById("placeholder");
-const modal = document.getElementById("mylist-modal");
-const addNewButton = document.getElementById("add-new-button"); // Updated selector
-const cancelButton = document.getElementById("mylist-modal-cancel");
-const form = document.getElementById("mylist-form");
-
-// Function to add items to the list
-function addToMyList(title, imageSrc, releaseDate) {
-    // Create a new list item
-    const newItem = document.createElement("div");
-    newItem.classList.add("mylist-item");
-
-    // Add content to the new item
-    newItem.innerHTML = `
-        <img src="${imageSrc}" alt="${title} Poster">
-        <h3>${title}</h3>
-        <p>${releaseDate}</p>
-    `;
-
-    // Append the new item to the container
-    myListContainer.insertBefore(newItem, addNewButton);
-}
-
-// Open modal on "+NEW" button click
-addNewButton.addEventListener("click", () => {
-    modal.style.display = "flex";
+addListBtn.addEventListener('click', () => {
+  addListModal.style.display = 'flex';
 });
 
-// Close modal on "Cancel" button click
-cancelButton.addEventListener("click", () => {
-    modal.style.display = "none";
+saveListBtn.addEventListener('click', () => {
+  const newListName = document.getElementById('mylist-new-list-name').value;
+  if (newListName) {
+    const option = document.createElement('option');
+    option.value = newListName.toLowerCase();
+    option.textContent = newListName;
+    categoryFilter.appendChild(option);
+    addListModal.style.display = 'none';
+  }
 });
 
-// Handle "Save" button click
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
+cancelListBtn.addEventListener('click', () => {
+  addListModal.style.display = 'none';
+});
 
-    // Get form values
-    const title = document.getElementById("item-title").value;
-    const imageSrc = document.getElementById("item-image").value;
-    const releaseDate = document.getElementById("item-date").value;
+newCard.addEventListener('click', () => {
+  addItemModal.style.display = 'flex';
+});
 
-    // Add the new item to the list
-    addToMyList(title, imageSrc, releaseDate);
+saveItemBtn.addEventListener('click', () => {
+  const posterInput = document.getElementById('mylist-item-poster');
+  const title = document.getElementById('mylist-item-title').value;
+  const rating = document.getElementById('mylist-item-rating').value;
 
-    // Reset form and close modal
-    form.reset();
-    modal.style.display = "none";
+  if (posterInput.files.length > 0 && title && rating) {
+    const file = posterInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const card = document.createElement('div');
+      card.className = 'mylist-card';
+      card.innerHTML = `
+        <img src="${e.target.result}" alt="${title}">
+        <div class="mylist-card-content">
+          <h2>${title}</h2>
+          <p>Rating: ${rating}/10</p>
+        </div>`;
+      document.querySelector('.mylist-content').appendChild(card);
+      addItemModal.style.display = 'none';
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+cancelItemBtn.addEventListener('click', () => {
+  addItemModal.style.display = 'none';
+});
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('mylist-modal')) {
+    event.target.style.display = 'none';
+  }
 });
