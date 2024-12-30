@@ -1,0 +1,109 @@
+:root {
+    --color-1: #E50914; /* Primary red */
+    --color-2: #B81D24; /* Secondary red */
+    --color-3: #221F1F; /* Dark background */
+    --color-4: #131313; /* Very dark background */
+    --color-5: #b00810; /* Accent red */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-3);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-container {
+    background: var(--color-4);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: var(--color-3);
+    color: #fff;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 1rem;
+}
+
+.tab.active {
+    font-weight: bold;
+    border-bottom: 2px solid var(--color-2);
+}
+
+.form {
+    display: none;
+}
+
+.form.active-form {
+    display: block;
+}
+
+h1 {
+    margin-bottom: 1rem;
+    color: var(--color-1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    text-align: left;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid var(--color-2);
+    border-radius: 4px;
+    background-color: var(--color-3);
+    color: #fff;
+}
+
+button {
+    background: var(--color-1);
+    color: #fff;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--color-5);
+}
+
+p {
+    margin-top: 1rem;
+    color: #fff;
+}
+
+a {
+    color: var(--color-1);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
