@@ -84,13 +84,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+        // Add this function here, after renderCalendar
+        function addEntryToDate(dateId, entry) {
+            const cell = document.querySelector(`.calendar-cell[data-date-id="${dateId}"]`);
+            if (cell) {
+                let entriesContainer = cell.querySelector('.entries-container');
+                if (!entriesContainer) {
+                    entriesContainer = document.createElement('div');
+                    entriesContainer.classList.add('entries-container');
+                    cell.appendChild(entriesContainer);
+                }
+        
+                // Create entry div
+                const entryDiv = document.createElement('div');
+                entryDiv.classList.add('entry');
+                entryDiv.innerHTML = `
+                    <span class="entry-type">${entry.type}</span>: 
+                    <span class="entry-title">${entry.title}</span>
+                    <button class="entry-delete-btn">X</button>
+                `;
+        
+                // Add event listener to the delete button
+                const deleteBtn = entryDiv.querySelector('.entry-delete-btn');
+                deleteBtn.addEventListener('click', () => {
+                    entryDiv.remove(); // Remove the entry when "X" is clicked
+                });
+        
+                entriesContainer.appendChild(entryDiv);
+            }
+        }
+        
+
     function openModal(day) {
+        console.log(`Opening modal for day: ${day}`); // Debug log
         selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
         const monthName = currentDate.toLocaleString('default', { month: 'long' });
         const year = currentDate.getFullYear();
         modalDate.textContent = `${monthName} ${day}, ${year}`;
         modal.style.display = 'flex';
         resetEntries();
+    
+        // Add a unique ID to the selected date for easy lookup
+        const calendarCells = document.querySelectorAll('.calendar-cell');
+        calendarCells.forEach(cell => {
+            if (cell.textContent == day && !cell.classList.contains('inactive')) {
+                cell.setAttribute('data-date-id', `${year}-${currentDate.getMonth()}-${day}`);
+            }
+        });
     }
 
     function resetEntries() {
@@ -132,11 +172,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 notes: entry.querySelector('.notes').value,
             };
         });
+    
+        if (selectedDate) {
+            const dateId = `${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
+            const targetCell = document.querySelector(`[data-date-id="${dateId}"]`);
+    
+            if (targetCell) {
+                // Clear existing entries under the date (optional)
+                let entriesContainer = targetCell.querySelector('.entries-container');
+                if (!entriesContainer) {
+                    entriesContainer = document.createElement('div');
+                    entriesContainer.classList.add('entries-container');
+                    targetCell.appendChild(entriesContainer);
+                }
+    
+                // Add new entries
+                data.forEach(entry => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.className = 'calendar-entry';
+                    entryDiv.innerHTML = `
+                        <div>${entry.title}</div>
+                        <div style="font-style: italic; font-size: 11px;">(${entry.notes})</div>
+                        <button class="entry-delete-btn">X</button>
+                    `;
+    
+                    // Delete button functionality
+                    const deleteBtn = entryDiv.querySelector('.entry-delete-btn');
+                    deleteBtn.addEventListener('click', () => {
+                        entryDiv.remove(); // Remove the entry when X is clicked
+                       
+                    });
 
-        console.log(`Entries for ${selectedDate.toDateString()}:`, data);
-        alert("Entries saved successfully!");
-        modal.style.display = 'none';
+                    entriesContainer.appendChild(entryDiv);
+                });
+            }
+        }
+    
+        modal.style.display = 'none'; // Close the modal after saving
     });
+    
 
     modalCancel.addEventListener('click', () => {
         modal.style.display = 'none';
