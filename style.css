@@ -167,6 +167,41 @@ section h1 {
 }
 
 /* Calendar */
+.calendar-entry div:last-child {
+    font-style: italic;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8); /* Optional: Slightly dimmed text */
+}
+
+.entry-delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 50%;
+}
+
+.entry-delete-btn:hover {
+    background-color: darkred;
+}
+
+.calendar-entry {
+    font-size: 12px;
+    color: white;
+    background: rgba(116, 107, 108, 0.8);
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: 2px 0;
+}
+.entries-container {
+    margin-top: 4px;
+}
+
 #calendar {
     padding: 6.8rem 4rem;
     max-width: 100%;
