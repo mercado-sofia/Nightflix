@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Log In</title>
+    <link rel="stylesheet" href="login-signup.css">
 </head>
 <body>
     <div class="auth-container">
         <div class="tabs">
-            <button id="login-tab" class="tab active">Login</button>
-            <button id="signup-tab" class="tab">Sign Up</button>
+            <a href="login.html" id="login-tab" class="tab active">Login</a>
+            <a href="signup.html" id="signup-tab" class="tab">Sign Up</a>
         </div>
 
         <div id="login-form" class="form active-form">
@@ -22,23 +22,8 @@
                 <input type="password" id="login-password" placeholder="Enter your password" required>
                 <button type="submit">Login</button>
             </form>
-            <p>Don't have an account? <a id="switch-to-signup" href="#">Sign up</a></p>
-        </div>
-
-        <div id="signup-form" class="form">
-            <h1>Sign Up</h1>
-            <form>
-                <label for="signup-name">Name:</label>
-                <input type="text" id="signup-name" placeholder="Enter your name" required>
-                <label for="signup-email">Email:</label>
-                <input type="email" id="signup-email" placeholder="Enter your email" required>
-                <label for="signup-password">Password:</label>
-                <input type="password" id="signup-password" placeholder="Enter your password" required>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p>Already have an account? <a id="switch-to-login" href="#">Login</a></p>
+            <p>Don't have an account? <a href="signup.html" style="color: red;">Sign up</a></p>
         </div>
     </div>
-    <script src="login.js"></script>
 </body>
 </html>
