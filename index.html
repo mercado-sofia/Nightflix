@@ -54,7 +54,6 @@
             </div>
         </div>
     </section>
-    
 
     <section id="mylist">
         <h1>My List</h1>
@@ -73,8 +72,9 @@
               </div>
             </div>
           </div>
+          <br>
     </section>    
-    
+
 <!-- Inside the Calendar Modal -->
 <div id="calendar-modal" class="modal">
     <div class="modal-content">
@@ -101,10 +101,7 @@
     </div>
 </div>
 
-    
-    
     <!-- MyList Modal -->
-
     <!-- Add List Modal -->
     <div class="mylist-modal" id="mylist-add-list-modal">
         <div class="mylist-modal-content">
@@ -132,6 +129,22 @@
           </div>
         </div>
     </div>
+
+    <!-- Edit Modal -->
+    <div id="mylist-add-item-modal" class="mylist-modal" style="display: none;">
+        <div class="mylist-modal-content">
+            <input type="file" id="mylist-item-poster" accept="image/*">
+            <img id="mylist-image-preview" style="display: none;" alt="Preview">
+            <input type="text" id="mylist-item-title" placeholder="Enter title">
+            <input type="number" id="mylist-item-rating" placeholder="Enter rating">
+            <div class="button-container">
+                <button id="mylist-cancel-item-btn">Cancel</button>
+                <button id="mylist-save-item-btn">Save</button>
+              </div>
+            </div>
+        </div>
+    </div>
+    
 
     <script src="script.js"></script>
 </body>

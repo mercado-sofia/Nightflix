@@ -168,7 +168,7 @@ section h1 {
 
 /* Calendar */
 #calendar {
-    padding: 7rem 4rem;
+    padding: 6.8rem 4rem;
     max-width: 100%;
     align-items: center;
     margin-bottom: 20rem;
@@ -396,10 +396,10 @@ section h1 {
 
 /* My List Section */
 #mylist {
-    padding: 7rem 4rem;
+    padding: 6.8rem 4rem;
     max-width: 100%;
+    height: auto;
     align-items: center;
-    margin-bottom: 35rem;
 }
 
 #mylist h1{
@@ -445,7 +445,7 @@ section h1 {
 
 .mylist-container {
     min-height: 50rem;
-    padding: 20px;
+    padding: 34px 0 60px 20px;
     background-color: var(--4);
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
@@ -454,9 +454,8 @@ section h1 {
 .mylist-content {
     display: flex;
     flex-wrap: wrap;
-    gap: 28px;
-    margin-left: 26px;
-    margin-top: 18px;
+    gap: 30px;
+    margin-left: 24px;
 }
 
 .mylist-card {
@@ -480,7 +479,7 @@ section h1 {
 }
 
 #mylist-new-card:hover {
-    transform: scale(1.01);
+    transform: scale(1.03);
     background-color: var(--4);
     border-color: #fff;
     color: var(--1);
@@ -571,6 +570,50 @@ section h1 {
 
 .mylist-modal-content button:hover {
     background-color: var(--5);
+}
+
+/* Overlay for cards */
+.mylist-card-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 8px;
+}
+
+.mylist-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.mylist-card-overlay button {
+    width: 90px;
+    padding: 10px;
+    background-color: white;
+    color: var(--1);
+    border: 2px solid var(--1);
+    font-size: 14px;
+    font-weight: bolder;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.mylist-card-overlay button:hover {
+    background-color: transparent;
+    color: white;
+    transform: scale(1.01);
+}
+
+.mylist-card:hover .mylist-card-overlay {
+    display: flex;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
