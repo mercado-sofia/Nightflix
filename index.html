@@ -54,6 +54,7 @@
             </div>
         </div>
     </section>
+    
 
     <section id="mylist">
         <h1>My List</h1>
@@ -74,30 +75,32 @@
           </div>
     </section>    
     
-    <!-- Calendar Modal -->
-    <div id="calendar-modal" class="modal">
-        <div class="modal-content">
-            <h3 id="modal-date">January 1, 2024</h3>
-            <div id="movie-series-entries">
-                <form class="entry-form">
-                    <label for="type">Type:</label>
-                    <select class="type">
-                        <option value="movie">Movie</option>
-                        <option value="series">Series</option>
-                    </select>
-                    <label for="title">Title:</label>
-                    <input type="text" class="title" placeholder="Enter movie or series title">
-                    <label for="notes">Notes:</label>
-                    <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, genres, snacks)"></textarea>
-                </form>
-            </div>
-            <div class="modal-buttons">
-                <button type="button" id="modal-cancel">Cancel</button>
-                <button type="button" id="modal-add-another">+ Add Another</button>
-                <button type="submit" id="modal-save">Save</button>
-            </div>
+<!-- Inside the Calendar Modal -->
+<div id="calendar-modal" class="modal">
+    <div class="modal-content">
+        <h3 id="modal-date">January 1, 2024</h3>
+        <div id="movie-series-entries">
+            <!-- Existing form for adding entries -->
+            <form class="entry-form">
+                <label for="type">Type:</label>
+                <select class="type">
+                    <option value="movie">Movie</option>
+                    <option value="series">Series</option>
+                </select>
+                <label for="title">Title:</label>
+                <input type="text" class="title" placeholder="Enter movie or series title">
+                <label for="notes">Notes:</label>
+                <textarea class="notes" placeholder="Enter additional details (e.g., seasons, episodes, genres, snacks)"></textarea>
+            </form>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" id="modal-cancel">Cancel</button>
+            <button type="button" id="modal-add-another">+ Add Another</button>
+            <button type="submit" id="modal-save">Save</button>
         </div>
     </div>
+</div>
+
     
     
     <!-- MyList Modal -->
