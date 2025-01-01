@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.textContent = i;
             calendarDates.appendChild(cell);
         }
+        
     }
 
     function addEntryToDate(dateId, entry) {
