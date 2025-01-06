@@ -125,18 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>${entry.type}</div>
             <div>${entry.title}</div>
             <div>${entry.notes}</div>
-            <div><button class="entry-delete-btn">X</button></div>
+            <div>
+                <button class="entry-delete-btn">Delete</button>
+            </div>
         `;
-
-            // Delete button functionality
-            const deleteBtn = entryRow.querySelector('.entry-delete-btn');
-            deleteBtn.addEventListener('click', (row) => {
-                row.stopPropagation();
-                entryRow.remove(); // Remove entry row on button click
-            });
-
+    
+        // Delete button functionality
+        entryRow.querySelector('.entry-delete-btn').addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this entry?')) {
+                entryRow.remove();
+            }
+        });
+    
         calendarEntriesContainer.appendChild(entryRow);
     }
+    
 
     saveButton.addEventListener('click', () => {
         const entries = document.querySelectorAll('.entry-form');
