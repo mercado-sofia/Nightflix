@@ -131,7 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     
         // Delete button functionality
-        entryRow.querySelector('.entry-delete-btn').addEventListener('click', (event) => {
+        
+        const deleteBtn = entryRow.querySelector('.entry-delete-btn');
+        deleteBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             if (confirm('Are you sure you want to delete this entry?')) {
                 entryRow.remove();
