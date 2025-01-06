@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('modal-save');
     const addAnotherBtn = document.getElementById('modal-add-another');
     const movieSeriesEntries = document.getElementById('movie-series-entries');
-
     const calendarEntriesContainer = document.getElementById('calendar-entries');
 
     let currentDate = new Date();
@@ -129,11 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <div><button class="entry-delete-btn">X</button></div>
         `;
 
-        // Delete button functionality
-        const deleteBtn = entryRow.querySelector('.entry-delete-btn');
-        deleteBtn.addEventListener('click', () => {
-            entryRow.remove(); // Remove entry row on button click
-        });
+            // Delete button functionality
+            const deleteBtn = entryRow.querySelector('.entry-delete-btn');
+            deleteBtn.addEventListener('click', (row) => {
+                row.stopPropagation();
+                entryRow.remove(); // Remove entry row on button click
+            });
 
         calendarEntriesContainer.appendChild(entryRow);
     }
@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderCalendar();
 });
+
 
 
 // MyList functionality
