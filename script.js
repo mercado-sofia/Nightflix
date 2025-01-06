@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('modal-save');
     const addAnotherBtn = document.getElementById('modal-add-another');
     const movieSeriesEntries = document.getElementById('movie-series-entries');
+    const calendarEntriesContainer = document.getElementById('calendar-entries');
 
     let currentDate = new Date();
     let selectedDate = null;
@@ -81,37 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.textContent = i;
             calendarDates.appendChild(cell);
         }
-        
-    }
-
-    function addEntryToDate(dateId, entry) {
-        const cell = document.querySelector(`.calendar-cell[data-date-id="${dateId}"]`);
-        if (cell) {
-            let entriesContainer = cell.querySelector('.entries-container');
-            if (!entriesContainer) {
-                entriesContainer = document.createElement('div');
-                entriesContainer.classList.add('entries-container');
-                cell.appendChild(entriesContainer);
-            }
-
-            // Create entry div
-            const entryDiv = document.createElement('div');
-            entryDiv.classList.add('entry');
-            entryDiv.innerHTML = `
-                <span class="entry-type">${entry.type}</span>: 
-                <span class="entry-title">${entry.title}</span>
-                <button class="entry-delete-btn">X</button>
-            `;
-
-            // Add event listener to the delete button
-            const deleteBtn = entryDiv.querySelector('.entry-delete-btn');
-            deleteBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                entryDiv.remove(); // Remove the entry when "X" is clicked
-            });
-
-            entriesContainer.appendChild(entryDiv);
-        }
     }
 
     function openModal(day) {
@@ -121,13 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modalDate.textContent = `${monthName} ${day}, ${year}`;
         modal.style.display = 'flex';
         resetEntries();
-
-        const calendarCells = document.querySelectorAll('.calendar-cell');
-        calendarCells.forEach(cell => {
-            if (cell.textContent == day && !cell.classList.contains('inactive')) {
-                cell.setAttribute('data-date-id', `${year}-${currentDate.getMonth()}-${day}`);
-            }
-        });
     }
 
     function resetEntries() {
@@ -154,9 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
         movieSeriesEntries.appendChild(newForm);
     }
 
-    addAnotherBtn.addEventListener('click', () => {
-        addEntryForm();
-    });
+    function addEntryToTable(date, entry) {
+        const entryRow = document.createElement('div');
+        entryRow.className = 'entry-row';
+        entryRow.innerHTML = `
+            <div>${date}</div>
+            <div>${entry.type}</div>
+            <div>${entry.title}</div>
+            <div>${entry.notes}</div>
+            <div>
+                <button class="entry-delete-btn">Delete</button>
+            </div>
+        `;
+    
+        // Delete button functionality
+        entryRow.querySelector('.entry-delete-btn').addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this entry?')) {
+                entryRow.remove();
+            }
+        });
+    
+        calendarEntriesContainer.appendChild(entryRow);
+    }
+    
 
     saveButton.addEventListener('click', () => {
         const entries = document.querySelectorAll('.entry-form');
@@ -167,35 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
 
         if (selectedDate) {
-            const dateId = `${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
-            const targetCell = document.querySelector(`[data-date-id="${dateId}"]`);
+            const dateString = selectedDate.toLocaleDateString('default', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            });
 
-            if (targetCell) {
-                let entriesContainer = targetCell.querySelector('.entries-container');
-                if (!entriesContainer) {
-                    entriesContainer = document.createElement('div');
-                    entriesContainer.classList.add('entries-container');
-                    targetCell.appendChild(entriesContainer);
-                }
-
-                data.forEach(entry => {
-                    const entryDiv = document.createElement('div');
-                    entryDiv.className = 'calendar-entry';
-                    entryDiv.innerHTML = `
-                        <div>${entry.title}</div>
-                        <div style="font-style: italic; font-size: 11px;">(${entry.notes})</div>
-                        <button class="entry-delete-btn">X</button>
-                    `;
-
-                    const deleteBtn = entryDiv.querySelector('.entry-delete-btn');
-                    deleteBtn.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        entryDiv.remove();
-                    });
-
-                    entriesContainer.appendChild(entryDiv);
-                });
-            }
+            data.forEach(entry => {
+                addEntryToTable(dateString, entry); // Add to the new table
+            });
         }
 
         modal.style.display = 'none';
@@ -227,6 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderCalendar();
 });
+
+
 
 // MyList functionality
 const addListBtn = document.getElementById('mylist-add-list-btn');
