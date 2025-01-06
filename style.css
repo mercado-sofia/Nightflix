@@ -662,3 +662,44 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+#calendar-entries-section {
+    margin-top: 20px;
+}
+
+#calendar-entries-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.entry-header, .entry-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr 3fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.entry-header {
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.entry-row {
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+}
+
+.entry-row button {
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.entry-row button:hover {
+    background: #ff1a1a;
+}
