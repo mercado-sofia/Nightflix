@@ -188,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
 });
 
+
 // MyList functionality
 const addListBtn = document.getElementById('mylist-add-list-btn');
 const addListModal = document.getElementById('mylist-add-list-modal');
