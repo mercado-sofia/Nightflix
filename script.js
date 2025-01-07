@@ -207,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // MyList functionality
+// MyList functionality
 const addListBtn = document.getElementById('mylist-add-list-btn');
 const addListModal = document.getElementById('mylist-add-list-modal');
 const saveListBtn = document.getElementById('mylist-save-list-btn');
@@ -228,65 +229,75 @@ const loadCategories = () => {
         option.textContent = category;
         categoryFilter.appendChild(option);
     });
+    console.log('Loaded categories from localStorage:', savedCategories);
 };
 
 // Load saved cards from localStorage
 const loadCards = () => {
     const savedCards = JSON.parse(localStorage.getItem('cards')) || [];
     savedCards.forEach(card => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'mylist-card';
-        cardElement.innerHTML = `
-            <img src="${card.poster}" alt="${card.title}">
-            <div class="mylist-card-content">
-                <h2>${card.title}</h2>
-                <p>Rating: ${card.rating}/10</p>
-            </div>
-            <div class="mylist-card-overlay">
-                <button class="edit-btn">Edit</button>
-                <button class="delete-btn">Delete</button>
-            </div>`;
-
-        // Add hover functionality
-        cardElement.addEventListener('mouseenter', () => {
-            cardElement.querySelector('.mylist-card-overlay').style.display = 'flex';
-        });
-
-        cardElement.addEventListener('mouseleave', () => {
-            cardElement.querySelector('.mylist-card-overlay').style.display = 'none';
-        });
-
-        // Edit functionality
-        cardElement.querySelector('.edit-btn').addEventListener('click', () => {
-            currentlyEditingCard = cardElement;
-
-            document.getElementById('mylist-item-title').value = card.title;
-            document.getElementById('mylist-item-rating').value = card.rating;
-
-            const previewImage = document.getElementById('mylist-image-preview');
-            previewImage.src = card.poster;
-            previewImage.alt = card.title;
-            previewImage.style.display = 'block';
-
-            addItemModal.style.display = 'flex';
-        });
-
-        // Delete functionality
-        cardElement.querySelector('.delete-btn').addEventListener('click', (event) => {
-            event.stopPropagation();
-            if (confirm('Are you sure you want to delete this?')) {
-                cardElement.remove();
-                saveCards();
-            }
-        });
-
+        const cardElement = createCardElement(card);
         document.querySelector('.mylist-content').appendChild(cardElement);
     });
+    console.log('Loaded cards from localStorage:', savedCards);
+};
+
+// Create a card element
+const createCardElement = (card) => {
+    const cardElement = document.createElement('div');
+    cardElement.className = 'mylist-card';
+    cardElement.innerHTML = `
+        <img src="${card.poster}" alt="${card.title}">
+        <div class="mylist-card-content">
+            <h2>${card.title}</h2>
+            <p>Rating: ${card.rating}/10</p>
+        </div>
+        <div class="mylist-card-overlay">
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </div>`;
+    
+    // Add hover functionality
+    cardElement.addEventListener('mouseenter', () => {
+        cardElement.querySelector('.mylist-card-overlay').style.display = 'flex';
+    });
+
+    cardElement.addEventListener('mouseleave', () => {
+        cardElement.querySelector('.mylist-card-overlay').style.display = 'none';
+    });
+
+    // Edit functionality
+    cardElement.querySelector('.edit-btn').addEventListener('click', () => {
+        currentlyEditingCard = cardElement;
+
+        document.getElementById('mylist-item-title').value = card.title;
+        document.getElementById('mylist-item-rating').value = card.rating;
+
+        const previewImage = document.getElementById('mylist-image-preview');
+        previewImage.src = card.poster;
+        previewImage.alt = card.title;
+        previewImage.style.display = 'block';
+
+        addItemModal.style.display = 'flex';
+        saveButtonState();
+    });
+
+    // Delete functionality
+    cardElement.querySelector('.delete-btn').addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (confirm('Are you sure you want to delete this?')) {
+            cardElement.remove();
+            saveCards();
+        }
+    });
+
+    return cardElement;
 };
 
 // Save categories to localStorage
 const saveCategories = () => {
     const categories = Array.from(categoryFilter.options).map(option => option.textContent);
+    console.log('Saving categories to localStorage:', categories); // Debugging
     localStorage.setItem('categories', JSON.stringify(categories));
 };
 
@@ -302,15 +313,60 @@ const saveCards = () => {
             rating
         };
     });
+    console.log('Saving cards to localStorage:', cards); // Debugging
     localStorage.setItem('cards', JSON.stringify(cards));
+};
+
+// Save button state and modal visibility to localStorage
+const saveButtonState = () => {
+    const state = {
+        addListModalVisible: addListModal.style.display === 'flex',
+        addItemModalVisible: addItemModal.style.display === 'flex',
+        currentlyEditingCard: currentlyEditingCard ? currentlyEditingCard.innerHTML : null,
+    };
+    console.log('Saving button state to localStorage:', state); // Debugging
+    localStorage.setItem('buttonState', JSON.stringify(state));
+};
+
+// Load button state and modal visibility from localStorage
+const loadButtonState = () => {
+    const savedState = JSON.parse(localStorage.getItem('buttonState')) || {};
+    if (savedState.addListModalVisible) {
+        addListModal.style.display = 'flex';
+    } else {
+        addListModal.style.display = 'none';
+    }
+
+    if (savedState.addItemModalVisible) {
+        addItemModal.style.display = 'flex';
+        if (savedState.currentlyEditingCard) {
+            const dummyCard = document.createElement('div');
+            dummyCard.innerHTML = savedState.currentlyEditingCard;
+            currentlyEditingCard = dummyCard;
+            const title = dummyCard.querySelector('.mylist-card-content h2').textContent;
+            const rating = dummyCard.querySelector('.mylist-card-content p').textContent.match(/\d+/)[0];
+            const imgSrc = dummyCard.querySelector('img').src;
+
+            document.getElementById('mylist-item-title').value = title;
+            document.getElementById('mylist-item-rating').value = rating;
+
+            const previewImage = document.getElementById('mylist-image-preview');
+            previewImage.src = imgSrc;
+            previewImage.style.display = 'block';
+        }
+    } else {
+        addItemModal.style.display = 'none';
+    }
 };
 
 // Initialize app by loading saved data
 loadCategories();
 loadCards();
+loadButtonState();
 
 addListBtn.addEventListener('click', () => {
     addListModal.style.display = 'flex';
+    saveButtonState();
 });
 
 saveListBtn.addEventListener('click', () => {
@@ -322,11 +378,13 @@ saveListBtn.addEventListener('click', () => {
         categoryFilter.appendChild(option);
         saveCategories();
         addListModal.style.display = 'none';
+        saveButtonState();
     }
 });
 
 cancelListBtn.addEventListener('click', () => {
     addListModal.style.display = 'none';
+    saveButtonState();
 });
 
 newCard.addEventListener('click', () => {
@@ -340,6 +398,7 @@ newCard.addEventListener('click', () => {
     const previewImage = document.getElementById('mylist-image-preview');
     previewImage.src = '';
     previewImage.style.display = 'none';
+    saveButtonState();
 });
 
 saveItemBtn.addEventListener('click', () => {
@@ -349,119 +408,54 @@ saveItemBtn.addEventListener('click', () => {
 
     if (title && rating) {
         if (currentlyEditingCard) {
-            // Update existing card
             const img = currentlyEditingCard.querySelector('img');
             const cardTitle = currentlyEditingCard.querySelector('.mylist-card-content h2');
             const cardRating = currentlyEditingCard.querySelector('.mylist-card-content p');
-
-            // Update title and rating
             cardTitle.textContent = title;
             cardRating.textContent = `Rating: ${rating}/10`;
 
-            // Update image only if a new one is uploaded
             if (posterInput.files.length > 0) {
                 const file = posterInput.files[0];
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     img.src = e.target.result;
                     img.alt = title;
-                    saveCards(); // Save updated cards to localStorage
+                    saveCards();
                 };
                 reader.readAsDataURL(file);
             }
 
             currentlyEditingCard = null;
         } else {
-            // Create a new card
             if (posterInput.files.length > 0) {
                 const file = posterInput.files[0];
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    const card = document.createElement('div');
-                    card.className = 'mylist-card';
-                    card.innerHTML = `
-                        <img src="${e.target.result}" alt="${title}">
-                        <div class="mylist-card-content">
-                            <h2>${title}</h2>
-                            <p>Rating: ${rating}/10</p>
-                        </div>
-                        <div class="mylist-card-overlay">
-                            <button class="edit-btn">Edit</button>
-                            <button class="delete-btn">Delete</button>
-                        </div>`;
-
-                    // Add hover functionality
-                    card.addEventListener('mouseenter', () => {
-                        card.querySelector('.mylist-card-overlay').style.display = 'flex';
+                    const card = createCardElement({
+                        poster: e.target.result,
+                        title,
+                        rating
                     });
-
-                    card.addEventListener('mouseleave', () => {
-                        card.querySelector('.mylist-card-overlay').style.display = 'none';
-                    });
-
-                    // Edit functionality
-                    card.querySelector('.edit-btn').addEventListener('click', () => {
-                        currentlyEditingCard = card;
-
-                        const cardTitle = card.querySelector('.mylist-card-content h2').textContent;
-                        const cardRating = card.querySelector('.mylist-card-content p').textContent.match(/\d+/)[0]; // Extract the rating value
-
-                        document.getElementById('mylist-item-title').value = cardTitle;
-                        document.getElementById('mylist-item-rating').value = cardRating;
-
-                        const previewImage = document.getElementById('mylist-image-preview');
-                        previewImage.src = card.querySelector('img').src;
-                        previewImage.alt = cardTitle;
-                        previewImage.style.display = 'block';
-
-                        addItemModal.style.display = 'flex';
-                    });
-
-                    // Delete functionality
-                    card.querySelector('.delete-btn').addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        if (confirm('Are you sure you want to delete this?')) {
-                            card.remove();
-                            saveCards(); // Save updated cards to localStorage
-                        }
-                    });
-
                     document.querySelector('.mylist-content').appendChild(card);
-                    saveCards(); // Save new cards to localStorage
-                    addItemModal.style.display = 'none';
+                    saveCards();
                 };
-
                 reader.readAsDataURL(file);
             }
         }
-        addItemModal.style.display = 'none';
-
-        document.getElementById('mylist-item-title').value = '';
-        document.getElementById('mylist-item-rating').value = '';
-        posterInput.value = '';
-        document.getElementById('mylist-image-preview').style.display = 'none';
     }
+    addItemModal.style.display = 'none';
+    saveButtonState();
 });
 
 cancelItemBtn.addEventListener('click', () => {
     addItemModal.style.display = 'none';
     currentlyEditingCard = null;
+    saveButtonState();
 });
 
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('mylist-modal')) {
         event.target.style.display = 'none';
+        saveButtonState();
     }
-});
-
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', (event) => {
-        event.preventDefault();
-        const targetSection = document.querySelector(link.getAttribute('href'));
-        if (targetSection) {
-            targetSection.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
 });
