@@ -39,6 +39,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentDate = new Date();
     let selectedDate = null;
 
+    function loadCalendarEntries() {
+        const savedEntries = JSON.parse(localStorage.getItem('calendarEntries')) || [];
+        savedEntries.forEach(entry => addEntryToTable(entry.date, entry));
+    }
+
+    function saveCalendarEntries() {
+        const entries = Array.from(calendarEntriesContainer.children).map(entryRow => ({
+            date: entryRow.children[0].textContent,
+            type: entryRow.children[1].textContent,
+            title: entryRow.children[2].textContent,
+            notes: entryRow.children[3].textContent,
+        }));
+        localStorage.setItem('calendarEntries', JSON.stringify(entries));
+    }
+
     function renderCalendar() {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -129,20 +144,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="entry-delete-btn">Delete</button>
             </div>
         `;
-    
-        // Delete button functionality
-        
+
         const deleteBtn = entryRow.querySelector('.entry-delete-btn');
-        deleteBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
+        deleteBtn.addEventListener('click', () => {
             if (confirm('Are you sure you want to delete this entry?')) {
                 entryRow.remove();
+                saveCalendarEntries();
             }
         });
-    
+
         calendarEntriesContainer.appendChild(entryRow);
     }
-    
 
     saveButton.addEventListener('click', () => {
         const entries = document.querySelectorAll('.entry-form');
@@ -159,12 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 day: 'numeric',
             });
 
-            data.forEach(entry => {
-                addEntryToTable(dateString, entry); // Add to the new table
-            });
+            data.forEach(entry => addEntryToTable(dateString, entry));
         }
 
         modal.style.display = 'none';
+        saveCalendarEntries();
     });
 
     modalCancel.addEventListener('click', () => {
@@ -192,9 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderCalendar();
+    loadCalendarEntries();
 });
-
-
 
 // MyList functionality
 const addListBtn = document.getElementById('mylist-add-list-btn');
@@ -209,6 +219,96 @@ const cancelItemBtn = document.getElementById('mylist-cancel-item-btn');
 
 let currentlyEditingCard = null;
 
+// Load saved categories from localStorage
+const loadCategories = () => {
+    const savedCategories = JSON.parse(localStorage.getItem('categories')) || [];
+    savedCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.toLowerCase();
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+};
+
+// Load saved cards from localStorage
+const loadCards = () => {
+    const savedCards = JSON.parse(localStorage.getItem('cards')) || [];
+    savedCards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'mylist-card';
+        cardElement.innerHTML = `
+            <img src="${card.poster}" alt="${card.title}">
+            <div class="mylist-card-content">
+                <h2>${card.title}</h2>
+                <p>Rating: ${card.rating}/10</p>
+            </div>
+            <div class="mylist-card-overlay">
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            </div>`;
+
+        // Add hover functionality
+        cardElement.addEventListener('mouseenter', () => {
+            cardElement.querySelector('.mylist-card-overlay').style.display = 'flex';
+        });
+
+        cardElement.addEventListener('mouseleave', () => {
+            cardElement.querySelector('.mylist-card-overlay').style.display = 'none';
+        });
+
+        // Edit functionality
+        cardElement.querySelector('.edit-btn').addEventListener('click', () => {
+            currentlyEditingCard = cardElement;
+
+            document.getElementById('mylist-item-title').value = card.title;
+            document.getElementById('mylist-item-rating').value = card.rating;
+
+            const previewImage = document.getElementById('mylist-image-preview');
+            previewImage.src = card.poster;
+            previewImage.alt = card.title;
+            previewImage.style.display = 'block';
+
+            addItemModal.style.display = 'flex';
+        });
+
+        // Delete functionality
+        cardElement.querySelector('.delete-btn').addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this?')) {
+                cardElement.remove();
+                saveCards();
+            }
+        });
+
+        document.querySelector('.mylist-content').appendChild(cardElement);
+    });
+};
+
+// Save categories to localStorage
+const saveCategories = () => {
+    const categories = Array.from(categoryFilter.options).map(option => option.textContent);
+    localStorage.setItem('categories', JSON.stringify(categories));
+};
+
+// Save cards to localStorage
+const saveCards = () => {
+    const cards = Array.from(document.querySelectorAll('.mylist-card')).map(card => {
+        const img = card.querySelector('img');
+        const title = card.querySelector('.mylist-card-content h2').textContent;
+        const rating = card.querySelector('.mylist-card-content p').textContent.match(/\d+/)[0]; // Extract the rating value
+        return {
+            poster: img.src,
+            title,
+            rating
+        };
+    });
+    localStorage.setItem('cards', JSON.stringify(cards));
+};
+
+// Initialize app by loading saved data
+loadCategories();
+loadCards();
+
 addListBtn.addEventListener('click', () => {
     addListModal.style.display = 'flex';
 });
@@ -220,6 +320,7 @@ saveListBtn.addEventListener('click', () => {
         option.value = newListName.toLowerCase();
         option.textContent = newListName;
         categoryFilter.appendChild(option);
+        saveCategories();
         addListModal.style.display = 'none';
     }
 });
@@ -264,6 +365,7 @@ saveItemBtn.addEventListener('click', () => {
                 reader.onload = (e) => {
                     img.src = e.target.result;
                     img.alt = title;
+                    saveCards(); // Save updated cards to localStorage
                 };
                 reader.readAsDataURL(file);
             }
@@ -320,10 +422,12 @@ saveItemBtn.addEventListener('click', () => {
                         event.stopPropagation();
                         if (confirm('Are you sure you want to delete this?')) {
                             card.remove();
+                            saveCards(); // Save updated cards to localStorage
                         }
                     });
 
                     document.querySelector('.mylist-content').appendChild(card);
+                    saveCards(); // Save new cards to localStorage
                     addItemModal.style.display = 'none';
                 };
 
