@@ -205,3 +205,256 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
     loadCalendarEntries();
 });
+
+// MyList functionality
+const addListBtn = document.getElementById('mylist-add-list-btn');
+const addListModal = document.getElementById('mylist-add-list-modal');
+const saveListBtn = document.getElementById('mylist-save-list-btn');
+const cancelListBtn = document.getElementById('mylist-cancel-list-btn');
+const categoryFilter = document.getElementById('mylist-category-filter');
+const newCard = document.getElementById('mylist-new-card');
+const addItemModal = document.getElementById('mylist-add-item-modal');
+const saveItemBtn = document.getElementById('mylist-save-item-btn');
+const cancelItemBtn = document.getElementById('mylist-cancel-item-btn');
+
+let currentlyEditingCard = null;
+
+// Load saved categories from localStorage
+const loadCategories = () => {
+    const savedCategories = JSON.parse(localStorage.getItem('categories')) || [];
+    savedCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.toLowerCase();
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+    console.log('Loaded categories from localStorage:', savedCategories);
+};
+
+// Load saved cards from localStorage
+const loadCards = () => {
+    const savedCards = JSON.parse(localStorage.getItem('cards')) || [];
+    savedCards.forEach(card => {
+        const cardElement = createCardElement(card);
+        document.querySelector('.mylist-content').appendChild(cardElement);
+    });
+    console.log('Loaded cards from localStorage:', savedCards);
+};
+
+// Create a card element
+const createCardElement = (card) => {
+    const cardElement = document.createElement('div');
+    cardElement.className = 'mylist-card';
+    cardElement.innerHTML = `
+        <img src="${card.poster}" alt="${card.title}">
+        <div class="mylist-card-content">
+            <h2>${card.title}</h2>
+            <p>Rating: ${card.rating}/10</p>
+        </div>
+        <div class="mylist-card-overlay">
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </div>`;
+    
+    // Add hover functionality
+    cardElement.addEventListener('mouseenter', () => {
+        cardElement.querySelector('.mylist-card-overlay').style.display = 'flex';
+    });
+
+    cardElement.addEventListener('mouseleave', () => {
+        cardElement.querySelector('.mylist-card-overlay').style.display = 'none';
+    });
+
+    // Edit functionality
+    cardElement.querySelector('.edit-btn').addEventListener('click', () => {
+        currentlyEditingCard = cardElement;
+
+        document.getElementById('mylist-item-title').value = card.title;
+        document.getElementById('mylist-item-rating').value = card.rating;
+
+        const previewImage = document.getElementById('mylist-image-preview');
+        previewImage.src = card.poster;
+        previewImage.alt = card.title;
+        previewImage.style.display = 'block';
+
+        addItemModal.style.display = 'flex';
+        saveButtonState();
+    });
+
+    // Delete functionality
+    cardElement.querySelector('.delete-btn').addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (confirm('Are you sure you want to delete this?')) {
+            cardElement.remove();
+            saveCards();
+        }
+    });
+
+    return cardElement;
+};
+
+// Save categories to localStorage
+const saveCategories = () => {
+    const categories = Array.from(categoryFilter.options).map(option => option.textContent);
+    console.log('Saving categories to localStorage:', categories); // Debugging
+    localStorage.setItem('categories', JSON.stringify(categories));
+};
+
+// Save cards to localStorage
+const saveCards = () => {
+    const cards = Array.from(document.querySelectorAll('.mylist-card')).map(card => {
+        const img = card.querySelector('img');
+        const title = card.querySelector('.mylist-card-content h2').textContent;
+        const rating = card.querySelector('.mylist-card-content p').textContent.match(/\d+/)[0]; // Extract the rating value
+        return {
+            poster: img.src,
+            title,
+            rating
+        };
+    });
+    console.log('Saving cards to localStorage:', cards); // Debugging
+    localStorage.setItem('cards', JSON.stringify(cards));
+};
+
+// Save button state and modal visibility to localStorage
+const saveButtonState = () => {
+    const state = {
+        addListModalVisible: addListModal.style.display === 'flex',
+        addItemModalVisible: addItemModal.style.display === 'flex',
+        currentlyEditingCard: currentlyEditingCard ? currentlyEditingCard.innerHTML : null,
+    };
+    console.log('Saving button state to localStorage:', state); // Debugging
+    localStorage.setItem('buttonState', JSON.stringify(state));
+};
+
+// Load button state and modal visibility from localStorage
+const loadButtonState = () => {
+    const savedState = JSON.parse(localStorage.getItem('buttonState')) || {};
+    if (savedState.addListModalVisible) {
+        addListModal.style.display = 'flex';
+    } else {
+        addListModal.style.display = 'none';
+    }
+
+    if (savedState.addItemModalVisible) {
+        addItemModal.style.display = 'flex';
+        if (savedState.currentlyEditingCard) {
+            const dummyCard = document.createElement('div');
+            dummyCard.innerHTML = savedState.currentlyEditingCard;
+            currentlyEditingCard = dummyCard;
+            const title = dummyCard.querySelector('.mylist-card-content h2').textContent;
+            const rating = dummyCard.querySelector('.mylist-card-content p').textContent.match(/\d+/)[0];
+            const imgSrc = dummyCard.querySelector('img').src;
+
+            document.getElementById('mylist-item-title').value = title;
+            document.getElementById('mylist-item-rating').value = rating;
+
+            const previewImage = document.getElementById('mylist-image-preview');
+            previewImage.src = imgSrc;
+            previewImage.style.display = 'block';
+        }
+    } else {
+        addItemModal.style.display = 'none';
+    }
+};
+
+// Initialize app by loading saved data
+loadCategories();
+loadCards();
+loadButtonState();
+
+addListBtn.addEventListener('click', () => {
+    addListModal.style.display = 'flex';
+    saveButtonState();
+});
+
+saveListBtn.addEventListener('click', () => {
+    const newListName = document.getElementById('mylist-new-list-name').value;
+    if (newListName) {
+        const option = document.createElement('option');
+        option.value = newListName.toLowerCase();
+        option.textContent = newListName;
+        categoryFilter.appendChild(option);
+        saveCategories();
+        addListModal.style.display = 'none';
+        saveButtonState();
+    }
+});
+
+cancelListBtn.addEventListener('click', () => {
+    addListModal.style.display = 'none';
+    saveButtonState();
+});
+
+newCard.addEventListener('click', () => {
+    addItemModal.style.display = 'flex';
+    currentlyEditingCard = null;
+
+    // Clear input fields
+    document.getElementById('mylist-item-poster').value = '';
+    document.getElementById('mylist-item-title').value = '';
+    document.getElementById('mylist-item-rating').value = '';
+    const previewImage = document.getElementById('mylist-image-preview');
+    previewImage.src = '';
+    previewImage.style.display = 'none';
+    saveButtonState();
+});
+
+saveItemBtn.addEventListener('click', () => {
+    const posterInput = document.getElementById('mylist-item-poster');
+    const title = document.getElementById('mylist-item-title').value.trim();
+    const rating = document.getElementById('mylist-item-rating').value.trim();
+
+    if (title && rating) {
+        if (currentlyEditingCard) {
+            const img = currentlyEditingCard.querySelector('img');
+            const cardTitle = currentlyEditingCard.querySelector('.mylist-card-content h2');
+            const cardRating = currentlyEditingCard.querySelector('.mylist-card-content p');
+            cardTitle.textContent = title;
+            cardRating.textContent = `Rating: ${rating}/10`;
+
+            if (posterInput.files.length > 0) {
+                const file = posterInput.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    img.src = e.target.result;
+                    img.alt = title;
+                    saveCards();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            currentlyEditingCard = null;
+        } else {
+            if (posterInput.files.length > 0) {
+                const file = posterInput.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const card = createCardElement({
+                        poster: e.target.result,
+                        title,
+                        rating
+                    });
+                    document.querySelector('.mylist-content').appendChild(card);
+                    saveCards();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+    addItemModal.style.display = 'none';
+    saveButtonState();
+});
+
+cancelItemBtn.addEventListener('click', () => {
+    addItemModal.style.display = 'none';
+    currentlyEditingCard = null;
+    saveButtonState();
+});
+
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('mylist-modal')) {
+        event.target.style.display = 'none';
+        saveButtonState();
+    }
+});
